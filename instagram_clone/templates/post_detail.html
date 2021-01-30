@@ -40,10 +40,17 @@
                 <p>{{ post.likes }} Likes</p>
               </div>
 
-              <div class="media-right">
-                <a href=""><i class='material-icons'>save_alt</i></a>
-                <p>Save</p>
-              </div>
+              {% if favorited is True%}
+                <div class="media-right">
+                  <a href="{% url 'postfavorite' post.id %}"><i class='material-icons has-text-danger'>save_alt</i></a>
+                  <p>Remove</p>
+                </div>
+              {% else %}
+                <div class="media-right">
+                  <a href="{% url 'postfavorite' post.id %}"><i class='material-icons has-text-success'>save_alt</i></a>
+                  <p>Save</p>
+                </div>
+              {% endif %}
 
             </div>
 
