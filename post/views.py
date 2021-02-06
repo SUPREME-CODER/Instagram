@@ -4,10 +4,16 @@ from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
 from django.contrib.auth.decorators import login_required
-from post.models import Post, Stream, Tag, Likes
-from post.forms import NewPostForm
 from django.urls import reverse
+
+# models
+from post.models import Post, Stream, Tag, Likes
+from comment.models import Comment
 from authy.models import Profile
+
+# forms
+from post.forms import NewPostForm
+from comment.forms import CommentForm
 
 
 @login_required
@@ -66,7 +72,21 @@ def NewPost(request):
 @login_required
 def PostDetails(request, post_id):
 	post = get_object_or_404(Post, id = post_id)
+	user = request.user
 	favorited = False
+
+	comments = Comment.objects.filter(post = post).order_by('date')
+
+	if request.method == 'POST':
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			comment = form.save(commit=False)
+			comment.user = user
+			comment.post = post
+			comment.save()
+			return HttpResponseRedirect(reverse('postdetails', args=[post_id]))
+	else:
+		form = CommentForm()
 
 	if request.user.is_authenticated:
 		profile = Profile.objects.get(user = request.user)
@@ -78,7 +98,9 @@ def PostDetails(request, post_id):
 
 	context = {
 		'post': post,
-		'favorited': favorited
+		'favorited': favorited,
+		'form': form,
+		'comments':comments,
 	}
 
 	return HttpResponse(template.render(context, request))
