@@ -4,7 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader 
 
 # models
-from direct.models import Message 
+from direct.models import Message
+
 # Create your views here.
 @login_required
 def inbox(request):
@@ -20,7 +21,7 @@ def inbox(request):
 		directs.update(is_read=True)
 
 		for message in messages:
-			if message['user']username == active_direct:
+			if message['user'].username == active_direct:
 				message['unread'] = 0
 
 		context = {
