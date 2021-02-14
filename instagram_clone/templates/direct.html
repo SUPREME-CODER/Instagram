@@ -50,7 +50,7 @@
 </ul>
 </aside>
 <br>
-<a href="{% url 'usersearch' %}" class="button is-success">New message</a>
+<!-- <a href="{% url 'usersearch' %}" class="button is-success">New message</a> -->
 
 </div>
 
@@ -59,20 +59,20 @@
 <div style="overflow-y: scroll; height: 500px">
 
 {% for direct in directs %}
-<div class="box">
-  <article class="media">
-    <div class="media-left">
-    </div>
-    <div class="media-content">
-      <div class="content">
-        <p>
-          <strong>{{ direct.sender.profile.first_name }} {{ direct.sender.profile.last_name }}</strong> <small>@{{ direct.sender.username }}</small> on: <strong><small>{{ direct.date|date:'N d G:i'}}</small></strong>
-        </p>
-        {{ direct.body }} 
+  <div class="box">
+    <article class="media">
+      <div class="media-left">
       </div>
-    </div>
-  </article>
-</div>
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <strong>{{ direct.sender.username }}</strong> on: <strong><small>{{ direct.date|date:'N d G:i'}}</small></strong>
+          </p>
+          {{ direct.body }} 
+        </div>
+      </div>
+    </article>
+  </div>
 {% endfor %}
 
 </div>
