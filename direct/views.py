@@ -5,6 +5,7 @@ from django.template import loader
 
 # models
 from direct.models import Message
+form django.contrib.auth.models import User
 
 # Create your views here.
 @login_required
