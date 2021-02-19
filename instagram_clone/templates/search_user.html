@@ -7,16 +7,17 @@
 
 
 <div class="columns is-multiline is-centered">
-    <div class="column is-offset-one-quarter">
+    <div class="column is-12">
 		<div class='field has-addons'>
-			<div class='control'>
-				<input class='input' type='text' placeholder=''>
-				
+			<form>
 				<div class='control'>
-					<a class='button is-info' href=""> Search </a>
+					<input class='input' name="q" type='text' placeholder='Search users' value={{ request.GET.q }}>
 				</div>
 
-			</div>
+				<div class='control'>
+					<button type='submit' class='button is-info' href=""> Search </button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
