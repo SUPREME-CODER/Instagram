@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.template import loader 
-
+from django.db.models import Q
+from django.core.paginator import Paginator
 # models
 from direct.models import Message
-form django.contrib.auth.models import User
+from django.contrib.auth.models import User
 
 # Create your views here.
 @login_required
@@ -69,3 +70,20 @@ def SendDirect(request):
 		return redirect('inbox')
 	else:
 		HttpResponseBadRequest()
+
+@login_required
+def UserSearch(request):
+	query = request.GET.get('q')
+	context = {}
+
+	if query:
+		users = User.objects.filter(Q(username_icontains=query))
+
+		paginator = Paginator(users, 6)
+		page_number = request.GET.get('page')
+		users_paginator = paginator.get_page(page_number)
+
+		context = {
+		'users':users_paginator,
+		}
+	template = loader
