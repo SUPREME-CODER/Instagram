@@ -86,4 +86,7 @@ def UserSearch(request):
 		context = {
 		'users':users_paginator,
 		}
-	template = loader
+	
+	template = loader.get_template('search_user.html')
+
+	return HttpResponse(template.render(context))
