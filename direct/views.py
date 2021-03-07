@@ -89,4 +89,4 @@ def UserSearch(request):
 	
 	template = loader.get_template('search_user.html')
 
-	return HttpResponse(template.render(context))
+	return HttpResponse(template.render(context, request))
