@@ -77,8 +77,10 @@ def UserSearch(request):
 	context = {}
 
 	if query:
-		users = User.objects.filter(Q(username_icontains=query))
-
+		print('Query', query)
+		print('Q', Q)
+		users = User.objects.filter(Q(username__icontains=query))
+		print(users)
 		paginator = Paginator(users, 6)
 		page_number = request.GET.get('page')
 		users_paginator = paginator.get_page(page_number)
