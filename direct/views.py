@@ -39,7 +39,7 @@ def inbox(request):
 @login_required
 def Directs(request, username):
 	user = request.user
-	messages = Message.objects.filter(user=user)
+	messages = Message.get_messages(user=user)
 	active_direct = username
 	directs = Message.objects.filter(user=user, recipient_username=username)
 	directs.update(is_read = True)
@@ -77,10 +77,8 @@ def UserSearch(request):
 	context = {}
 
 	if query:
-		print('Query', query)
-		print('Q', Q)
 		users = User.objects.filter(Q(username__icontains=query))
-		print(users)
+
 		paginator = Paginator(users, 6)
 		page_number = request.GET.get('page')
 		users_paginator = paginator.get_page(page_number)
@@ -92,3 +90,18 @@ def UserSearch(request):
 	template = loader.get_template('search_user.html')
 
 	return HttpResponse(template.render(context, request))
+
+@login_required
+def NewConversation(request, username):
+	from_user = request.user
+	body = ''
+
+	try:
+		to_user = User.objects.get(username=username)
+	except Exception as e:
+		print('Exception occured')
+		return redirect('usersearch')
+
+	if from_user != to_user:
+		Message.send_message(from_user, to_user, body)
+	return redirect('inbox')
