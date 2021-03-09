@@ -41,7 +41,7 @@ def Directs(request, username):
 	user = request.user
 	messages = Message.get_messages(user=user)
 	active_direct = username
-	directs = Message.objects.filter(user=user, recipient_username=username)
+	directs = Message.objects.filter(user=user, recipient__username=username)
 	directs.update(is_read = True)
 
 	for message in messages:
