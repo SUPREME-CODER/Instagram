@@ -35,7 +35,7 @@
 
       <div class="content">
         {% if message.unread %}
-        <p style="font-weight: bold; color: red;">
+        <p style="font-weight: bold; color: green;">
           <i class="material-icons">mark_chat_unread</i> {{ message.unread }}
         </p>
         {% endif %}        
@@ -59,20 +59,22 @@
 <div style="overflow-y: scroll; height: 500px">
 
 {% for direct in directs %}
+{% if direct.body != "" %}
   <div class="box">
     <article class="media">
       <div class="media-left">
       </div>
-      <div class="media-content">
-        <div class="content">
-          <p>
-            <strong>{{ direct.sender.username }}</strong> on: <strong><small>{{ direct.date|date:'N d G:i'}}</small></strong>
-          </p>
-          {{ direct.body }} 
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>{{ direct.sender.username }}</strong> on: <strong><small>{{ direct.date|date:'N d G:i'}}</small></strong>
+            </p>
+              {{ direct.body }}
+          </div>
         </div>
-      </div>
     </article>
   </div>
+{% endif %}
 {% endfor %}
 
 </div>

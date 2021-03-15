@@ -5,6 +5,10 @@ from post.models import Post, Tag, Follow, Stream
 # deep.bd@somaiya.edu
 # deep#1999
 # Register your models here.
+
+# sheldon.cooper
+# deepbdoshi@gmail.com
+# shelly@tbbt
 admin.site.register(Post)
 admin.site.register(Tag)
 admin.site.register(Follow)

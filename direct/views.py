@@ -26,11 +26,11 @@ def inbox(request):
 			if message['user'].username == active_direct:
 				message['unread'] = 0
 
-		context = {
-			'directs': directs,
-			'active_direct': active_direct,
-			'messages': messages,
-		}
+	context = {
+		'directs': directs,
+		'active_direct': active_direct,
+		'messages': messages,
+	}
 
 	template = loader.get_template('direct.html')
 
@@ -105,3 +105,10 @@ def NewConversation(request, username):
 	if from_user != to_user:
 		Message.send_message(from_user, to_user, body)
 	return redirect('inbox')
+
+def checkDirects(request):
+	directs_count = 0
+	if request.user.is_authenticated:
+		directs_count = Message.objects.filter(user=request.user, is_read=False).count()
+
+	return {'directs_count': directs_count}
