@@ -49,6 +49,25 @@ class Follow(models.Model):
 	follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
 	following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
 
+	def user_follow(sender, instance, *args, **kwargs):
+		follow = instance
+		sender = follow.follower
+		following = follow.following
+
+		notify = Notifications(sender=sender, user=following, notification_type=3)
+		notify.save()
+
+	def user_unfollow(sender, instance, *args, **kwargs):
+		follow = instance
+		sender = follow.follower
+		following = follow.following
+
+		notify = Notifications.objects.filter(sender=sender, user=following, notification_type=3)
+		notify.delete()
+
+post_save.connect(Follow.user_follow, sender=Follow)
+post_delete.connect(Follow.user_unfollow, sender=Follow)
+
 class Stream(models.Model):
 	following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stream_following')
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
