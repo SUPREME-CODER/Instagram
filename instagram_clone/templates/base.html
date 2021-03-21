@@ -38,9 +38,12 @@
               Explore
             </a>
 
-            <a class="navbar-item">
-              <i class='material-icons'>notifications</i>
+            <a href="{% url 'show-notifications' %}" class="navbar-item">
+              <i class="material-icons">notifications</i>
               Notifications
+              {% if count_notifications %}
+                <span class="badge">{{ count_notifications }}</span>
+              {% endif %}
             </a>
 
             <a href="{% url 'inbox' %}" class="navbar-item">

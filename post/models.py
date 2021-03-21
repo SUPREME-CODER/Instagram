@@ -3,9 +3,11 @@ from django.contrib.auth.models import User
 import uuid
 # Create your models here.
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.utils.text import slugify
 from django.urls import reverse
+
+from notifications.models import Notifications
 
 def user_directory_path(instance, filename):
 	# Returns the filename and path of the post of the user to be uploaded to MEDIA_ROOT
@@ -66,3 +68,22 @@ post_save.connect(Stream.add_post, sender=Post)
 class Likes(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_like')
 	post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_like')
+
+	def user_liked_post(sender, instance, *args, **kwargs):
+		like = instance
+		post = like.post
+		sender = like.user
+
+		notify = Notifications(post=post, sender=sender, user=post.user, notification_type=1)
+		notify.save()
+
+	def user_unlike_post(sender, instance, *args, **kwargs):
+		like = instance
+		post = like.post
+		sender = like.user
+
+		notify = Notifications.objects.filter(post=post, sender=sender, notification_type=1)
+		notify.delete()
+
+post_save.connect(Likes.user_liked_post, sender=Likes)
+post_delete.connect(Likes.user_unlike_post, sender=Likes)
