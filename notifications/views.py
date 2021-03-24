@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import loader
 from django.http import HttpResponse
 
@@ -16,3 +16,8 @@ def ShowNotifications(request):
 	}
 
 	return HttpResponse(template.render(context, request))
+
+def DeleteNotifications(request, noti_id):
+	user = request.user
+	Notifications.objects.filter(id=noti_id, user=user).delete()
+	return redirect('show-notifications')
