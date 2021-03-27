@@ -4,9 +4,19 @@ from post.models import Post
 
 from django.db.models.signals import post_save
 
+from PIL import Image
+from django.conf import settings
+import os
+
 def user_directory_path(instance, filename):
 	# Returns the filename and path of the post of the user to be uploaded to MEDIA_ROOT
-	return "user_{0}/{1}".format(instance.user.id, filename)
+	profile_pic_name = "user_{0}/profile.jpg".format(instance.user.id)
+	full_path = os.path.join(settings.MEDIA_ROOT, profile_pic_name)
+
+	if os.path.exists(full_path):
+		os.remove(full_path)
+
+	return profile_pic_name
 
 # Create your models here.
 class Profile(models.Model):
@@ -19,6 +29,15 @@ class Profile(models.Model):
 	created = models.DateField(auto_now_add=True)
 	favorites = models.ManyToManyField(Post)
 	picture = models.ImageField(upload_to=user_directory_path, blank=True, null=True, verbose_name='Picture')
+
+	def save(self, *args, **kwargs):
+		super().save(*args, **kwargs)
+		SIZE = 250, 250
+
+		if self.picture:
+			pic = Image.open(self.picture.path)
+			pic.thumbnail(SIZE, Image.LANCZOS)
+			pic.save(self.picture.path)
 
 def create_user_profile(sender, instance, created, **kwargs):
 	if created:
