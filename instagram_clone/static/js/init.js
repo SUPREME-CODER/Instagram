@@ -1,11 +1,11 @@
 $(document).ready(function(){
+
 	const modal = $('.modal');
 	slideIndex = 1;
 
 	$('.showModal').click(function(event){
 
 		var storyid = event.currentTarget.name;
-
 		$.ajax({
 			type: 'GET',
 			url: 'http://127.0.0.1:8000/stories/showmedia/'+ storyid,
@@ -19,9 +19,14 @@ $(document).ready(function(){
 					} else {
 						var div_slides_html = '<div class="mySlides fade"><img src="/media/'+ v.content +'" style="width:100%"><div class="text">'+ v.caption +'</div></div>'
 					}
+
 					$('#jsondata').append(div_slides_html);
+
+
 				});
+
 			}, 
+
 			complete: function(){
 				showSlides(slideIndex);
 			}

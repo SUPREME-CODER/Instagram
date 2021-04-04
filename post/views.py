@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 # models
-from post.models import Post, Stream, Tag, Likes
+from post.models import Post, Stream, Tag, Likes, PostFileContent
 from comment.models import Comment
 from authy.models import Profile
 
@@ -38,14 +38,15 @@ def index(request):
 
 @login_required
 def NewPost(request):
-	user = request.user.id
+	user = request.user
 	tag_objs = []
+	file_objs = []
 
 	if request.method == 'POST':
 		form = NewPostForm(request.POST, request.FILES)
 
 		if form.is_valid():
-			picture = form.cleaned_data.get('picture')
+			files = request.FILES.getlist('content')
 			caption = form.cleaned_data.get('caption')
 			tags_form = form.cleaned_data.get('tags')
 
@@ -55,8 +56,14 @@ def NewPost(request):
 				t, created = Tag.objects.get_or_create(title=tag)
 				tag_objs.append(t)
 
-			p, created = Post.objects.get_or_create(picture=picture, caption=caption, user_id=user)
+			for file in files:
+				file_instance = PostFileContent(file=file, user=user)
+				file_instance.save()
+				file_objs.append(file_instance)
+
+			p, created = Post.objects.get_or_create(caption=caption, user=user)
 			p.tags.set(tag_objs)
+			p.content.set(file_objs)
 			p.save()
 			return redirect('index')
 
