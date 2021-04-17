@@ -31,3 +31,11 @@ def NewStory(request):
 	}
 
 	return render(request, 'newstory.html', context)
+
+def ShowMedia(request, stream_id):
+	stories = StoryStream.objects.get(id=stream_id)
+	media_st = stories.story.all().values()
+
+	stories_list = list(media_st)
+
+	return JsonResponse(stories_list, safe=False)
