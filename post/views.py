@@ -10,7 +10,7 @@ from django.urls import reverse
 from post.models import Post, Stream, Tag, Likes, PostFileContent
 from comment.models import Comment
 from authy.models import Profile
-from stories import Story, StoryStream
+from stories.models import Story, StoryStream
 
 # forms
 from post.forms import NewPostForm

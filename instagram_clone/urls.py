@@ -22,8 +22,8 @@ from authy.views import UserProfile, follow
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/', include('authy.urls')),
     path('post/', include('post.urls')),
+    path('user/', include('authy.urls')),
     path('direct/', include('direct.urls')),
     path('stories/', include('stories.urls')),
     path('notifications/', include('notifications.urls')),

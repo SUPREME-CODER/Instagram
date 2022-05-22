@@ -28,7 +28,6 @@ class SignupForm(forms.ModelForm):
 	confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input is-medium'}), required=True, label="Confirm your password.")
 
 	class Meta:
-
 		model = User
 		fields = ('username', 'email', 'password')
 
@@ -46,6 +45,7 @@ class SignupForm(forms.ModelForm):
 
 		if password != confirm_password:
 			self._errors['password'] = self.error_class(['Passwords do not match. Try again'])
+		
 		return self.cleaned_data
 
 class ChangePasswordForm(forms.ModelForm):
@@ -66,9 +66,9 @@ class ChangePasswordForm(forms.ModelForm):
 		confirm_password = self.cleaned_data.get('confirm_password')
 		user = User.objects.get(pk=id)
 		if not user.check_password(old_password):
-			self._errors['old_password'] =self.error_class(['Old password do not match.'])
+			self._errors['old_password'] = self.error_class(['Old password do not match.'])
 		if new_password != confirm_password:
-			self._errors['new_password'] =self.error_class(['Passwords do not match.'])
+			self._errors['new_password'] = self.error_class(['Passwords do not match.'])
 		return self.cleaned_data
 
 class EditProfileForm(forms.ModelForm):

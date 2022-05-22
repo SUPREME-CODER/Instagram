@@ -2,5 +2,5 @@ from django.contrib import admin
 from stories.models import Story, StoryStream
 
 # Register your models here.
-admin.site.Register(Story)
-admin.site.Register(StoryStream)
+admin.site.register(Story)
+admin.site.register(StoryStream)

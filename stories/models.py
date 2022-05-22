@@ -22,7 +22,7 @@ class Story(models.Model):
 		return self.user.username
 
 class StoryStream(models.Model):
-	follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='story_following')
+	following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='story_following')
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	story = models.ManyToManyField(Story, related_name='stories')
 	date = models.DateTimeField(auto_now_add=True)
@@ -30,7 +30,7 @@ class StoryStream(models.Model):
 	def __str__(self):
 		return self.following.username + ' - ' + str(self.date)
 
-	def add_post(sender, isntance, *args, **kwargs):
+	def add_post(sender, instance, *args, **kwargs):
 		new_story = instance
 		user = new_story.user
 		followers = Follow.objects.all().filter(following=user)

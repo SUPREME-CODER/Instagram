@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 from stories.models import Story, StoryStream
-from stories.form import NewStoryForm
+from stories.forms import NewStoryForm
 
 from datetime import datetime, timedelta
 

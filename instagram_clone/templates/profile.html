@@ -110,7 +110,11 @@
       </div>
     {% empty %}
       <br>
-      <h3 class="title is-3">You do not have any post!</h3>
+      {% if user == profile.user %}
+        <h3 class="title is-3">You do not have any post!</h3>
+      {% else %}
+        <h3 class="title is-3">User does not have any post!</h3>
+      {% endif %}
     {% endfor %}
     </div>
 
